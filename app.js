@@ -2,27 +2,28 @@ const express = require("express");
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-let items= [];
+let items = [];
 
 app.get("/", (req, res) => {
     const today = new Date();
     let options = {
         weekday: "long",
-        day: 'numeric', 
-        month: 'long'
+        day: "numeric",
+        month: "long",
     };
     const whichDay = today.toLocaleDateString("en-US", options);
     res.render("list", {
         whichDay: whichDay,
-        items: items
+        items: items,
     });
 });
 
 app.post("/", (req, res) => {
-   items.push(req.body.newItem); 
-   res.redirect("/");
+    items.push(req.body.newItem);
+    res.redirect("/");
 });
 
 app.listen(3000, () => {
