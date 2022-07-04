@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const date = require(__dirname + "/date.js");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -9,16 +10,10 @@ let items = [];
 let workItems = [];
 
 app.get("/", (req, res) => {
-    const today = new Date();
-    let options = {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-    };
-    const whichDay = today.toLocaleDateString("en-US", options);
+    let whichDay = date.getDate();
     res.render("list", {
         listTitle: whichDay,
-        items: items,
+        items: items
     });
 });
 
@@ -34,7 +29,6 @@ app.get("/about", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-    console.log(req.body.list);
     if (req.body.list === "Work") {
         workItems.push(req.body.newItem);
         res.redirect("/work");
